@@ -350,7 +350,17 @@ class JS extends Minify
 
         // strip whitespace that ends in (or next line begin with) an operator
         // that allows statements to be broken up over multiple lines
-        unset($operatorsBefore['+'], $operatorsBefore['-'], $operatorsAfter['+'], $operatorsAfter['-']);
+        unset(
+            $operatorsBefore['+'],
+            $operatorsBefore['-'],
+            $operatorsAfter['+'],
+            $operatorsAfter['-'],
+            $operatorsBefore['<'],
+            $operatorsBefore['>'],
+            $operatorsAfter['<'],
+            $operatorsAfter['>']
+        );
+
         $content = preg_replace(
             array(
                 '/('.implode('|', $operatorsBefore).')\s+/',
@@ -380,6 +390,7 @@ class JS extends Minify
          * strip the newlines. However, we can safely strip any non-line feed
          * whitespace that follows them.
          */
+        unset($operators['>'], $operators['<']);
         $operatorsDiffBefore = array_diff($operators, $operatorsBefore);
         $operatorsDiffAfter = array_diff($operators, $operatorsAfter);
         $content = preg_replace('/('.implode('|', $operatorsDiffBefore).')[^\S\n]+/', '\\1', $content);
